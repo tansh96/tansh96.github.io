@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Box2D Graph</title>
+</head>
+<body>
+<canvas id="graph" width="600" height="400"></canvas>
+
+<script>
+    var graph = document.getElementById('graph');
+    var graphCtx = graph.getContext('2d');
+
+    var graphScaleX = 0.0006;
+    var graphScaleY = 0.003;
+    var graphTickSize = 4;
+    var graphTranslateX = 0;
+    var graphTranslateY = 200;
+    var graphDecimalPlace = 2;
+
+    var graphTickInterval = 50;
+    var graphGridSize = graphTickInterval/5;
+
+    // Normalize the graph canvas
+    graphCtx.translate(graphTranslateX + 0.5, graphTranslateY + 0.5);
+
+    function applyAxis() {
+        graphCtx.scale(1, 1);
+        // draw grids
+        graphCtx.strokeStyle = '#ccc';
+        graphCtx.beginPath();
+
+        // draw x-axis grids
+        for (var n = Math.floor(graph.width / graphGridSize); n >= 1; --n) { // label per 50 px
+            // draw grid
+            graphCtx.moveTo(graphGridSize * n + graphTranslateX, graphTranslateY);
+            graphCtx.lineTo(graphGridSize * n + graphTranslateX, -graphTranslateY);
+        }
+
+        // draw y-axis grids
+        for (n = Math.floor(graph.height / graphGridSize); n >= 1; --n) { // label per 50 px
+            // draw grid
+            graphCtx.moveTo(graphTranslateX, graphGridSize * n - graphTranslateY);
+            graphCtx.lineTo(600 + graphTranslateX, graphGridSize * n - graphTranslateY);
+        }
+        graphCtx.stroke();
+
+        // draw the axis
+        graphCtx.strokeStyle = '#000';
+        graphCtx.beginPath();
+
+        // draw x-axis
+        graphCtx.moveTo(0, 0);
+        graphCtx.lineTo(6000, 0);
+
+        // draw y-axis
+        graphCtx.moveTo(0, -graphTranslateY);
+        graphCtx.lineTo(0, graph.height - graphTranslateY);
+
+
+        // draw the x-axis number
+        graphCtx.textAlign = "center";
+        graphCtx.textBaseline = "top";
+        for (n = Math.floor(graph.width / graphTickInterval); n >= 1; --n) { // label per graphTickInterval px
+            // draw ticks
+            graphCtx.moveTo(graphTickInterval * n + graphTranslateX, graphTickSize);
+            graphCtx.lineTo(graphTickInterval * n + graphTranslateX, -graphTickSize);
+
+            // draw numbers
+            graphCtx.strokeText((graphTickInterval * n * graphScaleX).toFixed(graphDecimalPlace), graphTickInterval * n + graphTranslateX, graphTickSize);
+        }
+        graphCtx.stroke();
+
+        graphCtx.beginPath();
+        graphCtx.textAlign = "left";
+        // draw the y-axis number
+        for (n = Math.floor(graph.width / graphTickInterval); n >= 1; --n) { // label per graphTickInterval px
+            // draw ticks
+            graphCtx.moveTo(-graphTickSize, graphTickInterval * n - graphTranslateY);
+            graphCtx.lineTo(graphTickSize, graphTickInterval * n - graphTranslateY);
+
+            // draw numbers
+            graphCtx.strokeText(((graphTranslateY - (graphTickInterval * n )) * graphScaleY).toFixed(graphDecimalPlace), graphTickSize, graphTickInterval * n - graphTranslateY);
+        }
+        graphCtx.stroke();
+
+        graphCtx.scale(1, -1);
+    }
+    applyAxis();
+
+    // constant;
+    var rad45deg = 45 * Math.PI / 180;
+    var sqrt2 = Math.sqrt(2);
+
+
+    var angle = 30 * Math.PI / 180; // in radian
+    var angularVelocity = 0; // in radian per second
+    var angularAcceleration; // in radian per second per second
+
+    var acceleration, velocity = 0, displacement = Math.sqrt(2) / 2 * Math.sin(rad45deg + angle) - 0.5;
+
+    var dt = 0.0001; // delta time
+    var t = 0;
+
+    var angleList = [angle];
+    var displacementList = [displacement];
+
+    while (t < 0.6) {
+        angularAcceleration = Math.cos(rad45deg + angle) * (-sqrt2 * 9.81 + Math.pow(angularVelocity, 2) * Math.sin(rad45deg + angle)) / (1 / 3 + Math.pow(Math.cos(rad45deg + angle), 2));
+        angularVelocity = angularVelocity + dt * angularAcceleration;
+        angle = angle + dt * angularVelocity + 0.5 * angularAcceleration * dt * dt;
+        angleList.push(angle);
+
+        acceleration = sqrt2 / 2 * Math.cos(rad45deg + angle) * angularAcceleration - sqrt2 / 2 * Math.sin(rad45deg + angle) * Math.pow(angularVelocity, 2);
+        velocity = velocity + dt * acceleration;
+        displacement = displacement + dt * velocity + 0.5 * acceleration * dt * dt;
+        displacementList.push(displacement);
+
+//        console.log(t, angle, displacement);
+
+        t += dt;
+    }
+
+    graphCtx.beginPath();
+    graphCtx.moveTo(0, displacementList[0] / graphScaleY);
+    var graphStep = 20;
+    var l = displacementList.length - 2 * graphStep;
+    for (var n = 0; n < l; n += graphStep) {
+        var _displacement = displacementList[n];
+        graphCtx.lineTo(n * dt / graphScaleX, _displacement / graphScaleY);
+        console.log(n * dt / graphScaleX, _displacement / graphScaleY);
+    }
+    graphCtx.strokeStyle = '#ff0000';
+    graphCtx.stroke();
+
+    graphCtx.beginPath();
+    graphCtx.moveTo(0, angleList[0] / graphScaleY);
+    l = angleList.length - 2 * 20;
+    for (n = 0; n < l; n += graphStep) {
+        var _angle = angleList[n];
+        graphCtx.lineTo(n * dt / graphScaleX, _angle / graphScaleY);
+    }
+    graphCtx.strokeStyle = '#00ff00';
+    graphCtx.stroke();
+
+
+</script>
+</body>
+</html>
