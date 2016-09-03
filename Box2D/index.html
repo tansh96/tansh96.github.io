@@ -33,12 +33,12 @@
 
     var acceleration, velocity = 0, displacement = sqrt2 / 2 * Math.sin(rad45deg + angle);// - 0.5;
 
-    var dt = 0.0001; // delta time
+    var dt = 0.001; // delta time
     var t = 0;
 
     var timeScale = 0.5;
 
-    var frameInterval = 5;
+    var frameInterval = 16;
     function update() {
         setTimeout(function () {
             var _t = 0;
@@ -58,24 +58,23 @@
                 _t += dt;
             }
 
+            worldCtx.clearRect(-300, -200, 600, 400);
+            worldCtx.beginPath();
+
+            // draw plane
+            worldCtx.moveTo(-300, 0);
+            worldCtx.lineTo(300, 0);
+
+            // draw box
+            worldCtx.moveTo(Math.cos(rad45deg + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + angle));
+            worldCtx.lineTo(Math.cos(rad45deg + Math.PI / 2 + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI / 2 + angle));
+            worldCtx.lineTo(Math.cos(rad45deg + Math.PI + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI + angle));
+            worldCtx.lineTo(Math.cos(rad45deg + Math.PI * 3 / 2 + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI * 3 / 2 + angle));
+            worldCtx.closePath();
+            worldCtx.stroke();
+//            console.log(t, angle, displacement);
 
             if (angle > 0) {
-                worldCtx.clearRect(-300, -200, 600, 400);
-                worldCtx.beginPath();
-
-                // draw plane
-                worldCtx.moveTo(-300, 0);
-                worldCtx.lineTo(300, 0);
-
-                // draw box
-                worldCtx.moveTo(Math.cos(rad45deg + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + angle));
-                worldCtx.lineTo(Math.cos(rad45deg + Math.PI / 2 + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI / 2 + angle));
-                worldCtx.lineTo(Math.cos(rad45deg + Math.PI + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI + angle));
-                worldCtx.lineTo(Math.cos(rad45deg + Math.PI * 3 / 2 + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI * 3 / 2 + angle));
-                worldCtx.closePath();
-                worldCtx.stroke();
-
-//                console.log(t, angle, displacement);
                 update();
             }
         }, frameInterval);
