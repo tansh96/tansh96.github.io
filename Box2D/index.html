@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frictionless Box 2D</title>
+</head>
+<body>
+<canvas id="world" width="600" height="400"></canvas>
+
+<script>
+    var world = document.getElementById('world');
+    var worldCtx = world.getContext('2d');
+
+    var graphTickSize = 4;
+    var graphTranslateX = 300;
+    var graphTranslateY = 200;
+
+    var boxWidth = 100;
+
+    // Normalize the world canvas
+    worldCtx.translate(graphTranslateX + 0.5, graphTranslateY + 0.5);
+    worldCtx.scale(1, -1);
+
+
+    // constant;
+    var rad45deg = 45 * Math.PI / 180;
+    var sqrt2 = Math.sqrt(2);
+    var vertex = boxWidth / sqrt2;
+
+    var angle = 30 * Math.PI / 180; // in radian
+    var angularVelocity = 0; // in radian per second
+    var angularAcceleration; // in radian per second per second
+
+    var acceleration, velocity = 0, displacement = sqrt2 / 2 * Math.sin(rad45deg + angle);// - 0.5;
+
+    var dt = 0.0001; // delta time
+    var t = 0;
+
+    var timeScale = 0.05;
+
+    var frameInterval = 5;
+    function update() {
+        setTimeout(function () {
+            var _t = 0;
+            while (_t < frameInterval * timeScale / 1000) {
+                angularAcceleration = Math.cos(rad45deg + angle) * (-sqrt2 * 9.81 + Math.pow(angularVelocity, 2) * Math.sin(rad45deg + angle)) / (1 / 3 + Math.pow(Math.cos(rad45deg + angle), 2));
+                angularVelocity = angularVelocity + dt * angularAcceleration;
+                angle = angle + dt * angularVelocity + 0.5 * angularAcceleration * dt * dt;
+
+                acceleration = sqrt2 / 2 * Math.cos(rad45deg + angle) * angularAcceleration - sqrt2 / 2 * Math.sin(rad45deg + angle) * Math.pow(angularVelocity, 2);
+                velocity = velocity + dt * acceleration;
+                displacement = displacement + dt * velocity + 0.5 * acceleration * dt * dt;
+
+                if (angle < 0) {
+                    break;
+                }
+                t += dt;
+                _t += dt;
+            }
+
+
+            if (angle > 0) {
+                worldCtx.clearRect(-300, -200, 600, 400);
+                worldCtx.beginPath();
+
+                // draw plane
+                worldCtx.moveTo(-300, 0);
+                worldCtx.lineTo(300, 0);
+
+                // draw box
+                worldCtx.moveTo(Math.cos(rad45deg + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + angle));
+                worldCtx.lineTo(Math.cos(rad45deg + Math.PI / 2 + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI / 2 + angle));
+                worldCtx.lineTo(Math.cos(rad45deg + Math.PI + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI + angle));
+                worldCtx.lineTo(Math.cos(rad45deg + Math.PI * 3 / 2 + angle) * vertex, displacement * 100 + vertex * Math.sin(rad45deg + Math.PI * 3 / 2 + angle));
+                worldCtx.closePath();
+                worldCtx.stroke();
+
+//                console.log(t, angle, displacement);
+                update();
+            }
+        }, frameInterval);
+    }
+
+    function restart() {
+        angle = 30 * Math.PI / 180; // in radian
+        angularVelocity = 0; // in radian per second
+        angularAcceleration = 0; // in radian per second per second
+
+        acceleration = 0;
+        velocity = 0;
+        displacement = sqrt2 / 2 * Math.sin(rad45deg + angle);// - 0.5;
+
+        t = 0;
+        update();
+    }
+
+    restart();
+    setInterval(restart, 340.6999999999788 / timeScale + 1000);
+
+</script>
+</body>
+</html>
