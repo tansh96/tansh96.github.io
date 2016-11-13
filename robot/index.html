@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot</title>
+</head>
+<body>
+
+<canvas id="ObstacleCanvas" width="600" height="600" style="border:solid;position: absolute"></canvas>
+<canvas id="RobotCanvas" width="600" height="600" style="border:solid;position: absolute"></canvas>
+
+<div style="float: right;">
+    <button onclick="startRobot()">startRobot</button>
+    <br>
+    <button onclick="stopRobot()">stopRobot</button>
+    <br>
+    <button onclick="playBack()">playBack</button>
+    <br>
+    <button onclick="stopPlayback()">stopPlayback</button><br>
+    <label>
+        <input type="checkbox" onclick="stopOnCollide = this.checked">
+        stopOnCollide
+    </label> <br>
+    <label>
+        <input type="checkbox" onclick="stopOnSenseChange = this.checked">
+        stopOnSenseChange
+    </label>
+</div>
+
+<script src="EscapeBot.js"></script>
+<script src="Obstacles.js"></script>
+<script src="Algorithm1.js"></script>
+<script src="Debugger.js"></script>
+<script src="Simulator.js"></script>
+
+
+</body>
+</html>
