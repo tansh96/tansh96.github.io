@@ -14,7 +14,3 @@ var obstacles = {
         {x1: 0, y1: 403, x2: 403, y2: 403}
     ]
 };
-
-function drawObstacles() {
-
-}
