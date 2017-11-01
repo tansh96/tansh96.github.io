@@ -1,7 +1,7 @@
 # Laplace Transform
 
 ## Introduction
-$ F(s) = \int^oo_0 f(t)e^{-st} dt $
+$ F(s) = \int^\infty_0 f(t)e^{-st} dt $
 
 ## Laplace transform table
 
