@@ -7,6 +7,9 @@
     font-family: 'Skranji', cursive;
     text-align: center;
     font-weight: normal;
+    box-shadow: #9E9E9E 0px 0px 15px 0px;
+    margin: 0;
+    line-height: 80px;
 }
 
 #lists {
