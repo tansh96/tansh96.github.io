@@ -85,16 +85,16 @@ document.onkeydown = function(e){
 function randomize(){
     cleanLists();
     var inputs = listsNode.querySelectorAll('input');
-    var lists = [];
+    var list = [];
     for(var i = 0; i < inputs.length; ++i){
-        lists.push(inputs[i].value);
+        list.push(inputs[i].value);
     }
     for(var j = 0; j < 3; ++j){
-        lists = lists.sort(()=> Math.random() < 0.5);
+        list = list.sort(()=> Math.random() - 0.5);
     }
     
     for(var i = 0; i < inputs.length; ++i){
-        inputs[i].value = lists[i];
+        inputs[i].value = list[i];
     }
 }
 
