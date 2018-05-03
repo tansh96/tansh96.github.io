@@ -1,0 +1,68 @@
+#header{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0;
+    height: 80px;
+    font-family: 'Skranji', cursive;
+    text-align: center;
+    font-weight: normal;
+}
+
+#lists {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 80px;
+    top: 80px;
+    overflow: auto;
+    margin: 0;
+}
+
+#lists li{
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+    font-family: 'Skranji', cursive;
+    border-radius: 8px;
+    border: solid 1px #ccc;
+}
+
+#lists li input{
+    border: none;
+    font-family: 'Skranji', cursive;
+    font-size: 18px;
+    background: none;
+    width: 100%;
+}
+
+#button{
+    border: none;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+
+    font-family: 'Skranji', cursive;
+    text-align: center;
+    font-weight: normal;
+    font-size: 30px;
+    position: absolute;
+    background-color: #f44336;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 80px;
+    line-height: 80px; /* shall be same as height to vertical alignment*/
+
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently */
+}
+
+#lists li:hover{
+    background-color: #F3F3F3;
+}
