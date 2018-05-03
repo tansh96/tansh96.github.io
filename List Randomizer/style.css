@@ -66,3 +66,21 @@
 #lists li:hover{
     background-color: #F3F3F3;
 }
+
+body::after{
+    content: " ";
+    background-image: url("white cloud.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: contain;
+    
+    opacity: 0.3;
+    position: absolute;
+    z-index: -1;   
+        
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
