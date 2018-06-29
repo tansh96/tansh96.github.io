@@ -46,6 +46,8 @@ var turn = function (target, time, opts) {
             return;
         }
 
+        var $img = $(this).find('.img');
+        
         var result = checkResult();
         if(result){
             $('.result').attr('src', result);
@@ -64,7 +66,6 @@ var turn = function (target, time, opts) {
             return;
         }
 
-        var $img = $(this).find('.img');
         if ($img.next().attr('src') == 'img/red.png') {
             clickstate = 1;
             setTimeout(function () {
