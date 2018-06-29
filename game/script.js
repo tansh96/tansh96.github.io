@@ -47,24 +47,13 @@ var turn = function (target, time, opts) {
         }
 
         var $img = $(this).find('.img');
-        
-        var result = checkResult();
-        if(result){
-            $('.result').attr('src', result);
-            $('#show_result').show();
-            clickstate = 1;
-            setTimeout(function () {
-                $('#iosDialog1').show();
 
-                $img.parent().siblings('a').find('.info').addClass('shelter');
-                $img.parent().siblings('a').find('.img').stop().animate(opts[0], time, function () {
-                    $(this).hide().next().show();
-                    $(this).next().animate(opts[1], time);
-                });
+        $img.next().addClass('visible');
 
-            }, 1000)
-            return;
-        }
+        $img.stop().animate(opts[0], time, function () {
+            $(this).hide().next().show();
+            $(this).next().animate(opts[1], time);
+        });
 
         if ($img.next().attr('src') == 'img/red.png') {
             clickstate = 1;
@@ -80,17 +69,31 @@ var turn = function (target, time, opts) {
             }, 1000)
         }
 
-        $img.stop().animate(opts[0], time, function () {
-            $(this).hide().next().show();
-            $(this).next().animate(opts[1], time);
-        });
+        var result = checkResult();
+        if (result) {
+            $('.result').attr('src', result);
+            $('#show_result').show();
+            clickstate = 1;
+            setTimeout(function () {
+                $('#iosDialog1').show();
+
+                $img.parent().siblings('a').find('.info').addClass('shelter');
+                $('.info[src="' + result + '"]').removeClass('shelter');
+                $img.parent().siblings('a').find('.img').stop().animate(opts[0], time, function () {
+                    $(this).hide().next().show();
+                    $(this).next().animate(opts[1], time);
+                });
+
+            }, 1000)
+            return;
+        }
     });
 }
 
 function checkResult() {
 
     var a = [];
-    $('.info:visible').each(function (index, elem) {
+    $('.info.visible').each(function (index, elem) {
         a.push($(elem).attr('src'));
     })
 
@@ -99,7 +102,7 @@ function checkResult() {
     for (var i = 0, il = a.length; i < il; i++) {
         var key = a[i];
 
-        if(key == 'img/yellow.png'){
+        if (key == 'img/yellow.png') {
             continue;
         }
 
