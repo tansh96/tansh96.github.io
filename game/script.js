@@ -50,8 +50,17 @@ var turn = function (target, time, opts) {
         if(result){
             $('.result').attr('src', result);
             $('#show_result').show();
-            $('#iosDialog1').show();
             clickstate = 1;
+            setTimeout(function () {
+                $('#iosDialog1').show();
+
+                $img.parent().siblings('a').find('.info').addClass('shelter');
+                $img.parent().siblings('a').find('.img').stop().animate(opts[0], time, function () {
+                    $(this).hide().next().show();
+                    $(this).next().animate(opts[1], time);
+                });
+
+            }, 1000)
             return;
         }
 
